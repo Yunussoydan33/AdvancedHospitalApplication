@@ -1,184 +1,167 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, FlatList, Image } from 'react-native';
-import { FontAwesome } from '@expo/vector-icons';
+import React from "react";
+import { View, Text, ScrollView, TouchableOpacity, Image, StyleSheet } from "react-native";
+import { FontAwesome, Feather } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native"; 
+import Altbar from '../../Components/Altbar/Altbar';
 
-const doctors = Array.from({ length: 10 }, (_, index) => ({
-  id: index.toString(),
-  title: ['Uzm. Dr.', 'Prof. Dr.', 'Op. Dr.'][index % 3],
-  name: `A. ${['Erdal İbanoğlu', 'Murat Müslüman', 'Bedri Özer', 'Kadir Ercan', 'Özlem Gündeşlioğlu'][index % 5]}`,
-  hospital: `Medicana ${['Ataköy', 'Zincirlikuyu', 'Beylikdüzü', 'Bursa', 'İzmir'][index % 5]}`,
-  specialty: ['Anestezi Ve Reanimasyon', 'Sinir Cerrahisi', 'Kulak Burun Boğaz', 'Kalp Ve Damar Cerrahisi'][index % 4],
-}));
-
-export default function HekimlerPage({ navigation }) {
-  const [search, setSearch] = useState('');
-
-  const filteredDoctors = doctors.filter(d =>
-    d.name.toLowerCase().includes(search.toLowerCase())
-  );
+const HekimlerPage = () => {
+  const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
+      {/* Header */}
       <View style={styles.header}>
-        <Text style={styles.headerText}>Bütün Hekimler</Text>
-        <View style={styles.searchContainer}>
-          <FontAwesome name="search" size={20} color="#042387" style={styles.searchIcon} />
-          <TextInput
-            style={styles.searchInput}
-            placeholder="Hekim Ara"
-            value={search}
-            onChangeText={setSearch}
-          />
-          <TouchableOpacity style={styles.filterButton}>
-            <Text style={styles.filterText}>Filtreler</Text>
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Feather name="arrow-left" size={24} color="#1A237E" />
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>Doktor Hizmetleri</Text>
+        <TouchableOpacity>
+          <Feather name="search" size={24} color="#1A237E" />
+        </TouchableOpacity>
       </View>
-      <FlatList
-        data={filteredDoctors}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <TouchableOpacity style={styles.doctorCard} onPress={() => navigation.navigate('DoctorInfoPage', { doctor: item })}>
-            <View style={styles.doctorInfo}>
-              <Text style={styles.doctorTitle}>{item.title}</Text>
-              <Text style={styles.doctorName}>{item.name}</Text>
-              <View style={styles.tagContainer}>
-                <Text style={styles.hospitalTag}>{item.hospital}</Text>
-                <Text style={styles.specialtyTag}>{item.specialty}</Text>
+      
+      {/* Filter & Sort Buttons */}
+      <View style={styles.filterSortContainer}>
+        <TouchableOpacity style={styles.filterButton}>
+          <FontAwesome name="filter" size={18} color="#1A237E" />
+          <Text style={styles.filterText}>Filtrele</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.filterButton}>
+          <Feather name="sliders" size={18} color="#1A237E" />
+          <Text style={styles.filterText}>Sırala</Text>
+        </TouchableOpacity>
+      </View>
+      
+      {/* Doctor Cards */}
+      <ScrollView style={styles.doctorList} keyboardShouldPersistTaps="handled">
+        {[1, 2, 3].map((doctor, index) => (
+          <TouchableOpacity 
+            key={index} 
+            style={styles.card}
+            onPress={() => navigation.navigate("DoctorInfoPage", { doctorId: index })} // Doktor detayına yönlendirme
+          >
+            <View style={styles.cardHeader}>
+              <Image source={require('../../Assets/yunus.png')} style={styles.doctorImage} />
+              <View style={styles.cardTextContainer}>
+                <Text style={styles.speciality}>Deri ve Zührevi Hastalıkları</Text>
+                <Text style={styles.doctorName}>Doç. Dr. Duru Onan</Text>
+                <Text style={styles.hospital}>Başkent Üniversitesi Hastanesi - ANKARA</Text>
+              </View>
+              <View style={styles.favoriteContainer}>
+                <FontAwesome name="heart-o" size={22} color="#1A237E" />
+                <Text style={styles.favoriteCount}>5</Text>
               </View>
             </View>
-            <Image source={require('../../Assets/randevular.png')} style={styles.calendarIcon} />
-            <FontAwesome name="chevron-right" size={18} color="#19A7CE" style={styles.arrowIcon} />
           </TouchableOpacity>
-        )}
-        contentContainerStyle={styles.listContentContainer}
-      />
-      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-        <Text style={styles.backButtonText}>Geri</Text>
-      </TouchableOpacity>
+        ))}
+      </ScrollView>
+
+      {/* Altbar */}
+      <View style={styles.altbarContainer}>
+        <Altbar />
+      </View>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#F6F8FC',
+    flex: 1, // ✅ Sayfanın tam boyutta olmasını sağlar
+    backgroundColor: "#F5F5F5",
+    paddingHorizontal: 16,
+    paddingTop: 40,
   },
   header: {
-    backgroundColor: '#042387',
-    padding: 20,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingBottom: 16,
   },
-  headerText: {
-    color: 'white',
-    fontSize: 20,
-    fontWeight: 'bold',
+  headerTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#1A237E",
   },
-  searchContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'white',
-    borderRadius: 10,
-    paddingHorizontal: 10,
-    marginTop: 10,
-  },
-  searchIcon: {
-    marginRight: 8,
-  },
-  searchInput: {
-    flex: 1,
-    padding: 10,
+  filterSortContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 16,
   },
   filterButton: {
-    backgroundColor: '#19A7CE',
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    borderRadius: 10,
-    marginLeft: 10,
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 10,
+    borderWidth: 1,
+    borderColor: "#1A237E",
+    borderRadius: 8,
+    flex: 0.48,
+    justifyContent: "center",
   },
   filterText: {
-    color: 'white',
-    fontWeight: 'bold',
+    marginLeft: 8,
+    color: "#1A237E",
+    fontWeight: "bold",
   },
-  listContentContainer: {
-    paddingBottom: 20,
+  doctorList: {
+    flex: 1, // ✅ İçeriğin dinamik olarak genişlemesini sağlar
+    paddingBottom: 80, // ✅ Altbar'ın doktorları kapatmaması için boşluk bırak
   },
-  doctorCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'white',
-    marginHorizontal: 10,
-    marginVertical: 5,
-    padding: 15,
-    borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 1, height: 2 },
-    shadowOpacity: 0.2,
+  card: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 16,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
     shadowRadius: 4,
-    elevation: 4,
+    elevation: 3,
   },
-  doctorInfo: {
+  cardHeader: {
+    flexDirection: "row",
+  },
+  doctorImage: {
+    width: 80,
+    height: 80,
+    borderRadius: 20,
+    marginRight: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  cardTextContainer: {
     flex: 1,
+    paddingTop: 10,
   },
-  doctorTitle: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    color: '#333',
+  speciality: {
+    fontSize: 12,
+    color: "#757575",
   },
   doctorName: {
     fontSize: 16,
-    fontWeight: 'bold',
-    color: '#042387',
+    fontWeight: "bold",
+    color: "#1A237E",
+    paddingBottom: 10,
   },
-  tagContainer: {
-    flexDirection: 'row',
-    marginTop: 5,
+  hospital: {
+    fontSize: 14,
+    color: "#616161",
   },
-  hospitalTag: {
-    backgroundColor: '#E0E7FF',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 5,
-    marginRight: 5,
-    color: '#042387',
-    fontWeight: 'bold',
+  favoriteContainer: {
+    alignItems: "center",
+  },
+  favoriteCount: {
     fontSize: 12,
+    color: "#1A237E",
   },
-  specialtyTag: {
-    backgroundColor: '#E0E7FF',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 5,
-    color: '#042387',
-    fontWeight: 'bold',
-    fontSize: 12,
-  },
-  calendarIcon: {
-    width: 30,
-    height: 30,
-    marginRight: 10,
-  },
-  arrowIcon: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  backButton: {
-    backgroundColor: 'white',
-    padding: 16,
-    marginHorizontal: 16,
-    marginBottom: 20,
-    borderRadius: 8,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 1, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 4,
-  },
-  backButtonText: {
-    color: 'blue',
-    fontSize: 16,
-    fontWeight: 'bold',
+  altbarContainer: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
   },
 });
 
+export default HekimlerPage;

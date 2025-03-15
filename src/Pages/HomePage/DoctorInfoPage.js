@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, Modal } from 'react-native';
 import { useNavigation } from '@react-navigation/native'; // Navigasyon için import
+import OzgecmisSvg from '../../Assets/svg/OzgecmisSvg';
+import YazılarSvg from '../../Assets/svg/YazılarSvg';
+import SaglikRehberiSvg from '../../Assets/svg/SaglıkYazılarSvg';
 
 export default function DoctorInfoPage() {
   const [selectedTab, setSelectedTab] = useState('Hekim Özgeçmişi'); // Varsayılan olarak Hekim Özgeçmişi seçili
@@ -26,7 +29,7 @@ export default function DoctorInfoPage() {
               <Text style={styles.doctorTitle}>Prof. Dr.</Text>
               <Text style={styles.doctorName}>A. Murat Müslüman</Text>
               <View style={styles.tagContainer}>
-                <Text style={styles.hospitalTag}>Medicana Zincirlikuyu</Text>
+                <Text style={styles.hospitalTag}>Güven Hastanesi</Text>
                 <Text style={styles.specialtyTag}>Beyin Ve Sinir Cerrahisi</Text>
               </View>
             </View>
@@ -34,36 +37,37 @@ export default function DoctorInfoPage() {
 
           <View style={styles.separator} />
 
-          {/* Butonlar */}
           <View style={styles.buttonContainer}>
-            <TouchableOpacity 
-              style={[styles.tabButton, selectedTab === 'Hekim Özgeçmişi' && styles.selectedButton]} 
-              onPress={() => setSelectedTab('Hekim Özgeçmişi')}
-            >
-              <Image source={require('../../Assets/hekimozgecmisi.png')} style={styles.icon} />
-              <Text style={[styles.buttonText, selectedTab === 'Hekim Özgeçmişi' && styles.selectedButtonText]}>
-                Hekim Özgeçmişi
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity 
-              style={[styles.tabButton, selectedTab === 'Akademik Yayınlar' && styles.selectedButton]} 
-              onPress={() => setSelectedTab('Akademik Yayınlar')}
-            >
-              <Image source={require('../../Assets/akademikyayınlar.png')} style={styles.icon} />
-              <Text style={[styles.buttonText, selectedTab === 'Akademik Yayınlar' && styles.selectedButtonText]}>
-                Akademik Yayınlar
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity 
-              style={[styles.tabButton, selectedTab === 'Sağlık Rehberi' && styles.selectedButton]} 
-              onPress={() => setSelectedTab('Sağlık Rehberi')}
-            >
-              <Image source={require('../../Assets/saglıkrehberi.png')} style={styles.icon} />
-              <Text style={[styles.buttonText, selectedTab === 'Sağlık Rehberi' && styles.selectedButtonText]}>
-                Sağlık Rehberi Yazıları
-              </Text>
-            </TouchableOpacity>
-          </View>
+                     <TouchableOpacity 
+                       style={[styles.tabButton, selectedTab === 'Hekim Özgeçmişi' && styles.selectedButton]} 
+                       onPress={() => setSelectedTab('Hekim Özgeçmişi')}
+                     >
+                       <OzgecmisSvg width={30} height={30} />
+                       <Text style={[styles.buttonText, selectedTab === 'Hekim Özgeçmişi' && styles.selectedButtonText]}>
+                         Hekim Özgeçmişi
+                       </Text>
+                     </TouchableOpacity>
+         
+                     <TouchableOpacity 
+                       style={[styles.tabButton, selectedTab === 'Akademik Yayınlar' && styles.selectedButton]} 
+                       onPress={() => setSelectedTab('Akademik Yayınlar')}
+                     >
+                       <YazılarSvg width={30} height={30} />
+                       <Text style={[styles.buttonText, selectedTab === 'Akademik Yayınlar' && styles.selectedButtonText]}>
+                         Akademik Yayınlar
+                       </Text>
+                     </TouchableOpacity>
+         
+                     <TouchableOpacity 
+                       style={[styles.tabButton, selectedTab === 'Sağlık Rehberi' && styles.selectedButton]} 
+                       onPress={() => setSelectedTab('Sağlık Rehberi')}
+                     >
+                       <SaglikRehberiSvg width={30} height={30} />
+                       <Text style={[styles.buttonText, selectedTab === 'Sağlık Rehberi' && styles.selectedButtonText]}>
+                         Sağlık Rehberi Yazıları
+                       </Text>
+                     </TouchableOpacity>
+                   </View>
 
           <View style={styles.separator} />
 
@@ -178,7 +182,7 @@ const styles = StyleSheet.create({
     borderColor: '#ddd',
   },
   selectedButton: {
-    backgroundColor: '#042387',
+    backgroundColor: '#65EAAB',
   },
   buttonText: {
     fontSize: 12,
@@ -225,7 +229,7 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   actionButton: {
-    backgroundColor: '#20BEC7',
+    backgroundColor: '#65EAAB',
     padding: 15,
     borderRadius: 10,
     alignItems: 'center',

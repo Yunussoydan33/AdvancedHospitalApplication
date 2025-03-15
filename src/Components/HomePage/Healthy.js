@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
   healthTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#042387',
+    color: '#65EAAB',
   },
   expandableContent: {
     overflow: 'hidden',

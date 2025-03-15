@@ -29,15 +29,15 @@ export default function Header() {
       <View style={styles.headerContainer}>
         {/* Bildirim Butonu */}
         <TouchableOpacity style={styles.iconButton}>
-          <FontAwesome name="bell" size={30} color="#002E6E" />
+          <FontAwesome name="bell" size={30} color="#65EAAB" />
         </TouchableOpacity>
 
         {/* Logo */}
-        <Image source={require('../Assets/Medicana.png')} style={styles.logo} />
+        <Image source={require('../Assets/analogo.png')} style={styles.logo} />
 
         {/* Menü Butonu */}
         <TouchableOpacity onPress={openMenu} style={styles.iconButton}>
-          <Entypo name="menu" size={40} color="#002E6E" />
+          <Entypo name="menu" size={40} color="#65EAAB" />
         </TouchableOpacity>
       </View>
 
@@ -74,6 +74,8 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width * 0.4,
     resizeMode: 'contain',
     top: 15,
+    Color: '#65EAAB',
+
   },
   iconButton: {
     padding: 10,

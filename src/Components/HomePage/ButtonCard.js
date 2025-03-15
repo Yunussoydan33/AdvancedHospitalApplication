@@ -4,7 +4,6 @@ import { useNavigation } from '@react-navigation/native';
 
 const buttons = [
   { title: 'Randevular', image: require('../../Assets/randevular.png'), width: '48%', height: 90 },
-  { title: 'Sağlık Dosyam', image: require('../../Assets/saglıkdosyam.png'), width: '48%', height: 90 },
   { title: 'Hastaneler ve Hekimler', image: require('../../Assets/hastaneler.png'), width: '100%', height: 90 },
   { title: 'İlaç Takibi', image: require('../../Assets/ilactakibi.png'), width: '48%', height: 70 },
   { title: 'Yakınlarım', image: require('../../Assets/yakınlarım.png'), width: '48%', height: 70 },
@@ -129,7 +128,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#042387',
+    color: '#65EAAB',
   },
   modalBackground: {
     flex: 1,

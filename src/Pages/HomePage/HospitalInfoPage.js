@@ -1,25 +1,33 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView , Image} from 'react-native';
 import { FontAwesome5, MaterialIcons, Entypo } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native'; // Navigasyonu ekledim
+import { useNavigation } from '@react-navigation/native';
+
+// ✅ SVG Bileşenlerini Dahil Et
+import GenelSvg from '../../Assets/svg/GenelSvg';
+import OdalarSvg from '../../Assets/svg/OdalarSvg';
+import HekimlerSvg from '../../Assets/svg/HekimlerSvg';
+import TıbbiSvg from '../../Assets/svg/TıbbiSvg';
+import MedTeknoSvg from '../../Assets/svg/MedTeknoSvg';
+import SunulanHizmetSvg from '../../Assets/svg/SunulanHizmetSvg';
 
 const menuItems = [
-  { title: 'Genel Bilgiler', icon: require('../../Assets/hastaneler.png') },
-  { title: 'Odalar', icon: require('../../Assets/odalar.png') },
-  { title: 'Hekimler', icon: require('../../Assets/hekimler.png') },
-  { title: 'Tıbbi Birimler', icon: require('../../Assets/tıbbibirimler.png') },
-  { title: 'Medikal Teknolojiler', icon: require('../../Assets/medikarteknolojiler.png') },
-  { title: 'Sunulan Hizmetler', icon: require('../../Assets/sunulanhizmetler.png') },
+  { title: 'Genel Bilgiler', icon: <GenelSvg width={30} height={30} /> },
+  { title: 'Odalar', icon: <OdalarSvg width={30} height={30} /> },
+  { title: 'Hekimler', icon: <HekimlerSvg width={30} height={30} /> },
+  { title: 'Tıbbi Birimler', icon: <TıbbiSvg width={30} height={30} /> },
+  { title: 'Medikal Teknolojiler', icon: <MedTeknoSvg width={30} height={30} /> },
+  { title: 'Sunulan Hizmetler', icon: <SunulanHizmetSvg width={30} height={30} /> },
 ];
 
 export default function HospitalInfoPage() {
-  const navigation = useNavigation(); // Navigasyonu kullanıma aldım
+  const navigation = useNavigation();
 
   return (
     <ScrollView style={styles.container}>
       {/* Hospital Header */}
       <View style={styles.headerCard}>
-        <Image source={require('../../Assets/MedicanaKadıkoy.png')} style={styles.headerImage} />
+        <Image source={require('../../Assets/Medical.png')} style={styles.headerImage} />
         <View style={styles.infoContainer}></View>
 
         {/* Action Buttons */}
@@ -47,37 +55,33 @@ export default function HospitalInfoPage() {
       <View style={styles.menuCard}>
         {menuItems.map((item, index) => (
           <TouchableOpacity 
-  key={index} 
-  style={styles.menuItem}
-  onPress={() => {
-    if (item.title === "Genel Bilgiler") {
-      navigation.navigate("GenelBilgilerPage");
-    } else if (item.title === "Odalar") {
-      navigation.navigate("OdalarPage");
-    } else if (item.title === "Hekimler") {
-      navigation.navigate("HekimlerPage"); // Hekimler sayfasına yönlendirme
-    } else if (item.title === "Tıbbi Birimler") {
-      navigation.navigate("TıbbiBirimlerPage"); // Tıbbi Birimler sayfasına yönlendirme
-    }
-    else if (item.title === "Medikal Teknolojiler") {
-      navigation.navigate("MedicalTeknoloPage"); // Tıbbi Birimler sayfasına yönlendirme
-    }
-    else if (item.title === "Sunulan Hizmetler") {
-      navigation.navigate("SunulanHizmetPage"); // Tıbbi Birimler sayfasına yönlendirme
-    }
-  }}
->
-  <Image source={item.icon} style={styles.menuIcon} />
-  <Text style={styles.menuText}>{item.title}</Text>
-  <Entypo name="chevron-right" size={24} color="#19A7CE" />
-</TouchableOpacity>
+            key={index} 
+            style={styles.menuItem}
+            onPress={() => {
+              if (item.title === "Genel Bilgiler") {
+                navigation.navigate("GenelBilgilerPage");
+              } else if (item.title === "Odalar") {
+                navigation.navigate("OdalarPage");
+              } else if (item.title === "Hekimler") {
+                navigation.navigate("HekimlerPage");
+              } else if (item.title === "Tıbbi Birimler") {
+                navigation.navigate("TıbbiBirimlerPage");
+              } else if (item.title === "Medikal Teknolojiler") {
+                navigation.navigate("MedicalTeknoloPage");
+              } else if (item.title === "Sunulan Hizmetler") {
+                navigation.navigate("SunulanHizmetPage");
+              }
+            }}
+          >
+            {item.icon} 
+            <Text style={styles.menuText}>{item.title}</Text>
+            <Entypo name="chevron-right" size={24} color="#19A7CE" />
+          </TouchableOpacity>
         ))}
       </View>
 
       {/* Back Button */}
-      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-        <Text style={styles.backButtonText}>Geri</Text>
-      </TouchableOpacity>
+      
     </ScrollView>
   );
 }
@@ -154,16 +158,12 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#ddd',
   },
-  menuIcon: {
-    width: 30,
-    height: 30,
-    marginRight: 10,
-  },
   menuText: {
     fontSize: 16,
     fontWeight: 'bold',
     color: '#042387',
     flex: 1,
+    marginLeft: 10, 
   },
   backButton: {
     backgroundColor: 'white',
@@ -186,3 +186,4 @@ const styles = StyleSheet.create({
     color: '#042387',
   },
 });
+

@@ -1,5 +1,4 @@
 import { createStackNavigator } from '@react-navigation/stack';
-import HomeScreen from './Pages/HomeScreen'; // Dosya yolunu kendi yapına göre ayarla
 import LoginPage from '../Src/Pages/LoginPage/LoginPage'; // Dosya yolunu kendi yapına göre ayarla
 import SignupPage from '../Src/Pages/SignUp/SignupPage'; // Dosya yolunu kendi yapına göre ayarla
 import Verify from '../Src/Pages/SignUp/Verify'; // Dosya yolunu kendi yapına göre ayarla
@@ -32,21 +31,35 @@ import GenelBilgilerPage from '../Src/Pages/HospitalAndHekimPage/GenelBilgilerPa
 import OdalarPage from '../Src/Pages/HospitalAndHekimPage/OdalarPage'; // Dosya yolunu kendi yapına göre ayarla
 import MedicalTeknoloPage from '../Src/Pages/HospitalAndHekimPage/MedicalTeknoloPage'; // Dosya yolunu kendi yapına göre ayarla
 import SunulanHizmetPage from '../Src/Pages/HospitalAndHekimPage/SunulanHizmetPage'; // Dosya yolunu kendi yapına göre ayarla
+import DiscoverPage from '../Src/Pages/DiscoverPage'; // Dosya yolunu kendi yapına göre ayarla
+import EventDetailsPage from '../Src/Pages/DiscoverPage/EventDetailsPage'; // Dosya yolunu kendi yapına göre ayarla
+import YeniEstetikPage from '../Src/Pages/DiscoverPage/YeniEstetikPage'; // Dosya yolunu kendi yapına göre ayarla
 
 const Stack = createStackNavigator();
 
 export default function Navigate() {
   return (
     <Stack.Navigator>
-      <Stack.Screen 
-        name="Home" 
-        component={HomeScreen} 
-        options={{ headerShown: false }} // Sadece HomeScreen başlığını kaldırdık
-      />
+     
        <Stack.Screen 
           name="LoginPage" 
           component={LoginPage} 
           options={{ headerShown: false }} // Sadece HomeScreen başlığını kaldırdık
+          />
+          <Stack.Screen 
+          name="YeniEstetikPage" 
+          component={YeniEstetikPage} 
+          options={{ headerShown: false }} // Sadece HomeScreen başlığını kaldırdık
+          />
+          <Stack.Screen 
+          name="EventDetailsPage" 
+          component={EventDetailsPage} 
+          options={{ headerShown: false }} // Sadece HomeScreen başlığını kaldırdık
+          />
+           <Stack.Screen 
+          name="DiscoverPage" 
+          component={DiscoverPage} 
+          options={{ headerShown: true }} // Sadece HomeScreen başlığını kaldırdık
           />
             <Stack.Screen 
           name="SunulanHizmetPage" 
@@ -121,7 +134,7 @@ export default function Navigate() {
            <Stack.Screen 
           name="HekimlerPage" 
           component={HekimlerPage} 
-          options={{ headerShown: true }} // Sadece HomeScreen başlığını kaldırdık
+          options={{ headerShown: false }} // Sadece HomeScreen başlığını kaldırdık
           />
            <Stack.Screen 
           name="DoctorInfoPage" 
@@ -141,7 +154,7 @@ export default function Navigate() {
          <Stack.Screen 
           name="HospitalsPage" 
           component={HospitalsPage} 
-          options={{ headerShown: true }} // Sadece HomeScreen başlığını kaldırdık
+          options={{ headerShown: false }} // Sadece HomeScreen başlığını kaldırdık
         />
          <Stack.Screen 
           name="Verify" 

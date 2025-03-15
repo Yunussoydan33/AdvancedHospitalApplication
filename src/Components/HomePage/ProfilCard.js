@@ -56,12 +56,12 @@ const styles = StyleSheet.create({
   },
   welcomeText: {
     fontSize: 16,
-    color: '#072690',
+    color: '#65EAAB',
   },
   userName: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#072690',
+    color: '#65EAAB',
     lineHeight: 22,
   },
   profileButton: {

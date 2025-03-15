@@ -1,34 +1,34 @@
-import React, { useState, useRef } from 'react';
-import { View, TouchableOpacity, Text, StyleSheet, Animated, Image, Modal, Easing } from 'react-native';
+import React, { useState, useRef, useEffect } from 'react';
+import { View, TouchableOpacity, Text, StyleSheet, Animated, Easing, Image } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useIsFocused } from '@react-navigation/native';
 
 const Altbar = () => {
   const navigation = useNavigation();
-  const [isRotated, setIsRotated] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false); // Randevu Al modalı
+  const isFocused = useIsFocused();
   const rotation = useRef(new Animated.Value(0)).current;
-  const menuSlide = useRef(new Animated.Value(0)).current;
 
-  // Animasyonu başlatan fonksiyon
-  const toggleRotation = () => {
-    const toValue = isRotated ? 0 : 1;
-
-    Animated.parallel([
+  useEffect(() => {
+    if (isFocused) {
       Animated.timing(rotation, {
-        toValue,
+        toValue: 0,
         duration: 500,
         easing: Easing.linear,
         useNativeDriver: true,
-      }),
-      Animated.timing(menuSlide, {
-        toValue,
-        duration: 500,
-        easing: Easing.out(Easing.ease),
-        useNativeDriver: true,
-      }),
-    ]).start(() => {
-      setIsRotated(!isRotated);
+      }).start();
+    }
+  }, [isFocused]);
+
+  // Animasyonu başlatan fonksiyon ve sayfa yönlendirme
+  const toggleRotation = () => {
+    Animated.timing(rotation, {
+      toValue: 1,
+      duration: 500,
+      easing: Easing.linear,
+      useNativeDriver: true,
+    }).start(() => {
+      navigation.navigate('DiscoverPage');
+      rotation.setValue(0); // Animasyonu sıfırla
     });
   };
 
@@ -38,30 +38,8 @@ const Altbar = () => {
     outputRange: ['0deg', '180deg'],
   });
 
-  // Menü butonlarının yukarı-aşağı kayma animasyonu
-  const menuTranslateY = menuSlide.interpolate({
-    inputRange: [0, 1],
-    outputRange: [50, 0], // 50px aşağıdan başlasın, yukarı çıksın
-  });
-
   return (
     <View style={styles.container}>
-      {/* Menü Animasyonlu Görünecek */}
-      <Animated.View style={[styles.menuContainer, { transform: [{ translateY: menuTranslateY }], opacity: menuSlide }]}>
-        <TouchableOpacity style={styles.menuItem} onPress={() => console.log("Ara 5058443788")}>
-          <Image source={require('../../Assets/cagrımerkezi.png')} style={styles.menuIcon} />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('YakınlarımPage')}>
-          <Image source={require('../../Assets/Destek.png')} style={styles.menuIcon} />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('SettingsPage')}>
-          <Image source={require('../../Assets/ayarlarr.png')} style={styles.menuIcon} />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('HekimlerPage')}>
-          <Image source={require('../../Assets/hekimlerr.png')} style={styles.menuIcon} />
-        </TouchableOpacity>
-      </Animated.View>
-
       {/* Alt Menü */}
       <View style={styles.bottomBar}>
         <TouchableOpacity style={[styles.tab, styles.leftTab]} onPress={() => navigation.navigate('HomePage')}>
@@ -73,39 +51,17 @@ const Altbar = () => {
         <View style={styles.fastActionWrapper}>
           <TouchableOpacity style={styles.fastAction} onPress={toggleRotation}>
             <Animated.View style={[styles.fastActionCircle, { transform: [{ rotate: rotateInterpolate }] }]}>
-              <FontAwesome name="chevron-up" size={40} color="white" style={styles.baner} />
-              <FontAwesome name="chevron-up" size={40} color="#00C8E0" style={styles.innerIcon} />
+              <Image source={require('../../Assets/analogo.png')} style={styles.fastActionImage} />
             </Animated.View>
           </TouchableOpacity>
-          <Text style={styles.fastActionLabel}>Hızlı İşlemler</Text>
+          <Text style={styles.fastActionLabel}>Keşfet</Text>
         </View>
 
-        <TouchableOpacity style={[styles.tab, styles.rightTab]} onPress={() => setModalVisible(true)}>
+        <TouchableOpacity style={[styles.tab, styles.rightTab]} onPress={() => navigation.navigate('RandevuPage')}>
           <FontAwesome name="calendar" size={24} color="#002D72" />
           <Text style={styles.label}>Randevu Al</Text>
         </TouchableOpacity>
       </View>
-
-      {/* Randevu Al Modalı */}
-      <Modal
-        visible={modalVisible}
-        transparent
-        animationType="fade"
-        onRequestClose={() => setModalVisible(false)}
-      >
-        <View style={styles.modalBackground}>
-          <View style={styles.modalContainer}>
-            <Image source={require('../../Assets/Allert.png')} style={styles.modalIcon} />
-            <Text style={styles.modalText}>Bu özelliği kullanabilmek için profilinizi güncelleyin.</Text>
-            <TouchableOpacity style={styles.confirmButton} onPress={() => navigation.navigate('ProfiliDuzenlePage')}>
-              <Text style={styles.confirmButtonText}>Tamam</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.cancelButton} onPress={() => setModalVisible(false)}>
-              <Text style={styles.cancelButtonText}>Vazgeç</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
     </View>
   );
 };
@@ -113,29 +69,6 @@ const Altbar = () => {
 const styles = StyleSheet.create({
   container: {
     position: 'relative',
-  },
-  menuContainer: {
-    position: 'absolute',
-    bottom: 80,
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    backgroundColor: '#EAF0F6',
-    paddingVertical: 30,
-    borderTopLeftRadius: 15,
-    borderTopRightRadius: 15,
-    shadowColor: '#000',
-    shadowOpacity: 0.2,
-    shadowRadius: 10,
-    elevation: 5,
-  },
-  menuItem: {
-    alignItems: 'center',
-    flex: 1,
-  },
-  menuIcon: {
-    width: 90,
-    height: 90,
   },
   bottomBar: {
     flexDirection: 'row',
@@ -175,79 +108,25 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 40,
-    backgroundColor: '#002D72',
+    backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 5,
-    borderColor: '#DAE2EE',
+    borderColor: '#65EAAB',
     position: 'absolute',
     top: -55,
-    right: -55,
+    right: -75,
   },
-  innerIcon: {
-    position: 'absolute',
-    bottom: 5,
-  },
-  baner: {
-    position: 'absolute',
-    bottom: 20,
+  fastActionImage: {
+    width: 50,
+    height: 50,
+    resizeMode: 'contain',
   },
   fastActionLabel: {
     fontSize: 14,
     color: '#002D72',
     marginTop: 30,
-    right: -15,
-  },
-  modalBackground: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  modalContainer: {
-    width: '85%',
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 20,
-    alignItems: 'center',
-  },
-  modalIcon: {
-    width: 100,
-    height: 90,
-    marginBottom: 20,
-  },
-  modalText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#2D4159',
-    textAlign: 'center',
-    marginBottom: 20,
-  },
-  confirmButton: {
-    width: '100%',
-    backgroundColor: '#003366',
-    padding: 15,
-    borderRadius: 8,
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  confirmButtonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  cancelButton: {
-    width: '100%',
-    borderWidth: 1,
-    borderColor: '#003366',
-    padding: 15,
-    borderRadius: 8,
-    alignItems: 'center',
-  },
-  cancelButtonText: {
-    color: '#003366',
-    fontSize: 16,
-    fontWeight: 'bold',
+    right: -35,
   },
 });
 

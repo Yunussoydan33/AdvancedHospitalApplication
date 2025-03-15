@@ -1,42 +1,36 @@
-import React from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
-import Header from '../../Components/Header';
-import ProfilCard from '../../Components/HomePage/ProfilCard';
-import ButonCard from '../../Components/HomePage/ButtonCard';
-import Healthy from '../../Components/HomePage/Healthy';
-import Altbar from '../../Components/Altbar/Altbar'; // Altbar import edildi
+import React from "react";
+import { View, ScrollView, StyleSheet } from "react-native";
+import Headers from '../../Components/Header';
+import HomePageCart from "../../Components/HomePageCart";
+import Altbar from "../../Components/Altbar/Altbar";
+import DiscoverPage from "../DiscoverPage";
+import { useNavigation, useRoute } from '@react-navigation/native';
 
-export default function HomePage() {
+const HomeScreen = () => {
+  const navigation = useNavigation();
+  const route = useRoute();
+
   return (
     <View style={styles.container}>
-      <Header 
-        onNotificationPress={() => console.log('Bildirim Tıklandı!')} 
-        onMenuPress={() => console.log('Menü Açıldı!')} 
-      />
-
-      {/* Kaydırılabilir içerik */}
-      <ScrollView contentContainerStyle={styles.scrollContainer} showsVerticalScrollIndicator={false}>
-        <ProfilCard onPressProfile={() => console.log('Profil Açıldı!')} />
-        <ButonCard onPress={(title) => console.log(`${title} butonuna basıldı!`)} />
-        <Healthy />
+      {/* Sabit Header */}
+      <Headers />
+      
+      <ScrollView style={styles.scrollContainer}>
+        <HomePageCart />
+        <DiscoverPage navigation={navigation} route={route} />
       </ScrollView>
-
-      {/* Alt Bar - Sabit Kaldı */}
-      <Altbar 
-        onHomePress={() => console.log('Ana Sayfa Açıldı')}
-        onFastActionsPress={() => console.log('Hızlı İşlemler Açıldı')}
-        onAppointmentPress={() => console.log('Randevu Al Açıldı')}
-      />
+      <Altbar/>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F4F8FF',
+    backgroundColor: "#F5F3FE",
   },
   scrollContainer: {
-    paddingBottom: 50, // Altbar'a çarpmasını önlemek için yeterli boşluk
   },
 });
+
+export default HomeScreen;
